@@ -117,7 +117,21 @@
             // Calculation Logic
 
             var getSecondsFromTimeObject = function(time){
+              var numSecondsFromHours = 0;
+              var numSecondsFromMinutes = 0;
 
+              var secondsInMinute = 60;
+              var secondsInHour = secondsInMinute * 60;
+
+              if (time.hours){
+                numSecondsFromHours = time.hours * secondsInHour;
+              }
+
+              if (time.minutes){
+                numSecondsFromMinutes = time.minutes * secondsInMinute;
+              }
+
+              return numSecondsFromHours + numSecondsFromMinutes + time.seconds;
             };
 
             var getSecondsFromPaceObject = function(pace){
@@ -160,7 +174,18 @@
               var totalSeconds = secondsPerUnitOfDistance * distance.value;
               return getTimeObjectFromSeconds(totalSeconds);
             };
-            var calculateDistanceFromTimeAndPace = function(time, pace){}
+            var calculateDistanceFromTimeAndPace = function(time, pace){
+              var totalSeconds = getSecondsFromTimeObject(time);
+              var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
+
+              var value = totalSeconds / secondsPerUnitOfDistance;
+              var unit = pace.unit;
+
+              return {
+                value: value,
+                unit: unit
+              };
+            }
             var calculatePaceFromTimeAndDistance = function(time, distance){}
 
             // DOM parsing/data retrieval logic
@@ -199,6 +224,19 @@
               };
             };
 
+            var getTimeObjectFromTimeForm = function(){
+              var form = document.getElementById("time-form");
+              var hours = parseInt(form.querySelector("[name=hh]").value);
+              var minutes = parseInt(form.querySelector("[name=mm]").value);
+              var seconds = parseInt(form.querySelector("[name=ss]").value);
+
+              return {
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds
+              };
+            };
+
             // Form filling logic
 
             var fillTimeFormFromTimeObject = function(time){
@@ -211,6 +249,16 @@
               hoursInput.value = time.hours;
               minutesInput.value = time.minutes;
               secondsInput.value = time.seconds;
+            };
+
+            var fillDistanceFormFromDistanceObject = function(distance){
+              var form = document.getElementById("distance-form");
+
+              var valueInput = form.querySelector("input[name=value]");
+              var unitSelectTag = form.querySelector("select");
+
+              valueInput.value = distance.value;
+              unitSelectTag.value = distance.unit;
             };
 
             // Event handlers
@@ -228,7 +276,20 @@
 
               fillTimeFormFromTimeObject(time);
             });
-  
+
+            document.getElementById("distance-button").addEventListener("click", function(){
+              var time = getTimeObjectFromTimeForm();
+              var pace = getPaceObjectFromPaceForm();
+
+              if (!time || !pace){
+                alert("Enter time and pace to calculate distance.")
+                return;
+              }
+
+              var distance = calculateDistanceFromTimeAndPace(time, pace);
+
+              fillDistanceFormFromDistanceObject(distance);
+            });
           </script>
         </div>
       </div>
