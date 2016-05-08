@@ -170,10 +170,21 @@
             };
 
             var calculateTimeFromDistanceAndPace = function(distance, pace){
+              // Normalize whichever (distance or pace) is not in mile format
+              if (distance.unit !== pace.unit){
+                if (pace.unit == "mile"){
+                  distance = convertKMDistanceToMileDistance(distance);
+                } else if (pace.unit == "km"){
+                  pace = convertKMPaceToMilePace(pace);
+                }
+              }
+
               var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
               var totalSeconds = secondsPerUnitOfDistance * distance.value;
+
               return getTimeObjectFromSeconds(totalSeconds);
             };
+
             var calculateDistanceFromTimeAndPace = function(time, pace){
               var totalSeconds = getSecondsFromTimeObject(time);
               var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
@@ -181,22 +192,97 @@
               var value = totalSeconds / secondsPerUnitOfDistance;
               var unit = pace.unit;
 
-              return {
+              var distanceObject = {
                 value: value,
                 unit: unit
               };
+
+              var unitFromDistanceForm = getDistanceUnitFromDistanceForm();
+
+              if (unitFromDistanceForm !== unit){
+                if (unitFromDistanceForm === "km"){
+                  distanceObject = convertMileDistanceToKMDistance(distanceObject);
+                } else if (unitFromDistanceForm === "mile") {
+                  distanceObject = convertKMDistanceToMileDistance(distanceObject);
+                }
+              }
+
+              return distanceObject;
             }
+
             var calculatePaceFromTimeAndDistance = function(time, distance){
               var totalSeconds = getSecondsFromTimeObject(time);
               var secondsPerUnitOfDistance = totalSeconds / distance.value;
               var timeObject = getTimeObjectFromSeconds(secondsPerUnitOfDistance);
 
-              return {
+              var paceObject = {
                 minutes: timeObject.minutes,
                 seconds: timeObject.seconds,
                 unit: distance.unit
               };
+
+              var unitFromPaceForm = getPaceUnitFromPaceForm();
+
+              if (unitFromPaceForm !== distance.unit){
+                if (unitFromPaceForm == "km"){
+                  paceObject = convertMilePaceToKMPace(paceObject)
+                } else if (unitFromPaceForm == "mile"){
+                  paceObject = convertKMPaceToMilePace(paceObject)
+                }
+              }
+
+              return paceObject;
             }
+
+            // Unit conversion logic
+            var milesPerKm = 0.621371;
+            var kmPerMile = 1/milesPerKm;
+
+            var convertMilePaceToKMPace = function(pace){
+              if (pace.unit == "km"){
+                return pace;
+              }
+
+              var secondsPerMile = getSecondsFromPaceObject(pace);
+              var secondsPerKM = secondsPerMile * milesPerKm;
+              var kmTimeObject = getTimeObjectFromSeconds(secondsPerKM)
+
+              return {
+                minutes: kmTimeObject.minutes,
+                seconds: kmTimeObject.seconds,
+                unit: "km"
+              };
+            };
+
+            var convertKMPaceToMilePace = function(pace){
+              if (pace.unit == "mile"){
+                return pace;
+              }
+
+              var secondsPerKM = getSecondsFromPaceObject(pace);
+              var secondsPerMile = secondsPerKM * kmPerMile;
+
+              var mileTimeObject = getTimeObjectFromSeconds(secondsPerMile);
+              return {
+                minutes: mileTimeObject.minutes,
+                seconds: mileTimeObject.seconds,
+                unit: "mile"
+              };
+            };
+
+            var convertKMDistanceToMileDistance = function(distance){
+              return {
+                value: distance.value * milesPerKm,
+                unit: "mile"
+              };
+            };
+
+            var convertMileDistanceToKMDistance = function(distance){
+              return {
+                value: distance.value * kmPerMile,
+                unit: "km"
+              };
+            };
 
             // DOM parsing/data retrieval logic
 
@@ -249,6 +335,18 @@
                 minutes: minutes,
                 seconds: seconds
               };
+            };
+
+            var getPaceUnitFromPaceForm = function(){
+              var form = document.getElementById("pace-form");
+              var unit = form.querySelector("select").value;
+              return unit;
+            };
+
+            var getDistanceUnitFromDistanceForm = function(){
+              var form = document.getElementById("distance-form");
+              var unit = form.querySelector("select").value;
+              return unit;
             };
 
             // Form filling logic
