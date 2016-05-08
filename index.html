@@ -4,9 +4,19 @@
     <!-- 1. Load webcomponents-lite.min.js for polyfill support. -->
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="./pace-calc.html">
+    <style>
+      body {
+        background: lightgrey;
+      }
+      #box {
+        margin: 0 auto;
+        margin-top: 100px;
+        width: 500px
+      }
+    </style>
   </head>
   <body>
-    <div style="width:500px;">
+    <div id="box">
       <pace-calc></pace-calc>
     </div>
   </body>
