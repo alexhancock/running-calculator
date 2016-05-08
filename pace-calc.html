@@ -1,439 +1,405 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
+<link rel="import" href="bower_components/paper-card/paper-card.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="bower_components/paper-item/paper-item.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+
 <dom-module id="pace-calc">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment">
-      div {
-        color: green;
-      }
-      label, input {
-        display: block;
-      }
-      input.mini {
-        width: 30px;
-        margin: 0 auto;
-      }
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
       .top {
-        width: 100vw;
-        height: 315px;
+        width: 100%;
       }
       .main_fields {
-        width: 400px;
-        padding-left: 10px;
+        width: 100%;
       }
-      .labels {
-        width: 100px;
-        text-align: center;
-        background: black;
-        color: white;
+      .paper-card {
+        width: 100%;
       }
-      .labels .item {
-        height: 100px;
-        line-height: 100px;
-        width: 100px;
-        text-align: center;
-        background: black;
-        color: white;
+      paper-input, paper-dropdown-menu {
+        margin-left: 2px;
+        margin-right: 2px;
+        color: green;
       }
-      .field {
-        height: 100px;
+      paper-button {
+        width: 120px;
       }
-      .forminput {
-        width: 150px;
-      }
-      .time-input-container {
-        width: 50px;
-        text-align: center;
+      h3 {
+        margin: 0;
       }
     </style>
-    <div class="top layout horizontal">
-      <span class="flex"></span>
-      <div class="layout vertical labels center">
-        <span class="item">Time</span>
-        <span class="item">Distance</span>
-        <span class="item">Pace</span>
-      </div>
-      <div class="layout vertical main_fields">
-        <div class="layout horizontal center">
-          <form id="time-form" class="layout horizontal center field">
-            <div class="time-input-container">
-              <span>HH</label>
-              <input name="hh" class="mini"></input>
+    <paper-card heading="Pace Calculator" style="width: 100%;">
+      <div class="card-content">
+        <div class="top layout horizontal">
+          <div class="layout vertical main_fields">
+            <h3>Time</h3>
+            <div class="layout horizontal center">
+              <form id="time-form" class="layout horizontal center flex">
+                <paper-input name="hh" label="HH"></paper-input>
+                <paper-input name="mm" label="MM"></paper-input>
+                <paper-input name="ss" label="SS"></paper-input>
+              </form>
+              <paper-button raised id="time-button">Calculate</paper-button>
             </div>
-            <div class="time-input-container">
-              <span>MM</label>
-              <input name="mm" class="mini"></input>
+            <h3>Distance</h3>
+            <div class="layout horizontal center">
+              <form id="distance-form" class="layout horizontal center flex">
+                <paper-input type="text" name="value" placeholder="10"></paper-input>
+                <paper-dropdown-menu>
+                  <paper-listbox class="dropdown-content" selected="mile" attr-for-selected="data-value">
+                    <paper-item data-value="mile">Mile</paper-item>
+                    <paper-item data-value="km">KM</paper-item>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </form>
+              <paper-button raised id="distance-button">Calculate</paper-button>
             </div>
-            <div class="time-input-container">
-              <span>SS</label>
-              <input name="ss" class="mini"></input>
-            </div>
-          </form>
-          <span class="flex"></span>
-          <button id="time-button">Calculate</button>
-        </div>
-        <div class="layout horizontal center">
-          <form id="distance-form" class="layout horizontal center field">
-            <div>
-              <input class="forminput" type="text" name="value" placeholder="10"></input>
-              <select class="forminput">
-                <option val="mile">mile</option>
-                <option val="km">km</option>
-              </select>
-            </div>
-          </form>
-          <span class="flex"></span>
-          <button id="distance-button">Calculate</button>
-        </div>
-        <div class="layout horizontal center">
-          <form id="pace-form" class="layout vertical center">
-            <div class="layout horizontal center field">
-              <div class="time-input-container">
-                <span>MM</label>
-                <input name="mm" class="mini"></input>
-              </div>
-              <div class="time-input-container">
-                <span>SS</label>
-                <input name="ss" class="mini"></input>
-              </div>
-            </div>
-            <div>
-              <span>Per</label>
-              <select>
-                <option val="mile">mile</option>
-                <option val="km">km</option>
-              </select>
-            </div>
-          </form>
-          <span class="flex"></span>
-          <button id="pace-button">Calculate</button>
-          <script type="text/javascript">
-            // Type diagram
-            // time -> { hours: DD, minutes: DD, seconds: DD  }
-            // distance -> { value: DD, unit: miles/km }
-            // pace -> { minutes: DD, seconds: DD, unit: miles/km }
+            <h3>Pace</h3>
+            <div class="layout horizontal center">
+              <form id="pace-form" class="layout horizontal center flex">
+                <paper-input name="mm" label="MM"></paper-input>
+                <paper-input name="ss" label="SS"></paper-input>
+                <paper-dropdown-menu label="per">
+                  <paper-listbox class="dropdown-content" selected="mile" attr-for-selected="data-value">
+                    <paper-item data-value="mile">Mile</paper-item>
+                    <paper-item data-value="km">KM</paper-item>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </form>
+              <paper-button raised id="pace-button">Calculate</paper-button>
+              <script type="text/javascript">
+                // Type diagram
+                // time -> { hours: DD, minutes: DD, seconds: DD  }
+                // distance -> { value: DD, unit: miles/km }
+                // pace -> { minutes: DD, seconds: DD, unit: miles/km }
 
-            // Calculation Logic
+                // Calculation Logic
 
-            var getSecondsFromTimeObject = function(time){
-              var numSecondsFromHours = 0;
-              var numSecondsFromMinutes = 0;
+                var getSecondsFromTimeObject = function(time){
+                  var numSecondsFromHours = 0;
+                  var numSecondsFromMinutes = 0;
 
-              var secondsInMinute = 60;
-              var secondsInHour = secondsInMinute * 60;
+                  var secondsInMinute = 60;
+                  var secondsInHour = secondsInMinute * 60;
 
-              if (time.hours){
-                numSecondsFromHours = time.hours * secondsInHour;
-              }
+                  if (time.hours){
+                    numSecondsFromHours = time.hours * secondsInHour;
+                  }
 
-              if (time.minutes){
-                numSecondsFromMinutes = time.minutes * secondsInMinute;
-              }
+                  if (time.minutes){
+                    numSecondsFromMinutes = time.minutes * secondsInMinute;
+                  }
 
-              return numSecondsFromHours + numSecondsFromMinutes + time.seconds;
-            };
+                  return numSecondsFromHours + numSecondsFromMinutes + time.seconds;
+                };
 
-            var getSecondsFromPaceObject = function(pace){
-              var numSecondsFromMinutes;
-              if (pace.minutes){
-                numSecondsInMinutes = pace.minutes * 60;
-              } else {
-                numSecondsInMinutes = 0;
-              }
-              return numSecondsInMinutes + pace.seconds
-            };
+                var getSecondsFromPaceObject = function(pace){
+                  var numSecondsFromMinutes;
+                  if (pace.minutes){
+                    numSecondsInMinutes = pace.minutes * 60;
+                  } else {
+                    numSecondsInMinutes = 0;
+                  }
+                  return numSecondsInMinutes + pace.seconds
+                };
 
-            var getTimeObjectFromSeconds = function(seconds){
-              var hours = 0;
-              var minutes = 0;
-              var remainingSeconds = seconds;
+                var getTimeObjectFromSeconds = function(seconds){
+                  var hours = 0;
+                  var minutes = 0;
+                  var remainingSeconds = seconds;
 
-              var secondsInMinute = 60;
-              var secondsInHour = secondsInMinute * 60;
+                  var secondsInMinute = 60;
+                  var secondsInHour = secondsInMinute * 60;
 
-              if (remainingSeconds >= secondsInHour){
-                hours = Math.floor(remainingSeconds / secondsInHour);
-                remainingSeconds = remainingSeconds % secondsInHour;
-              }
+                  if (remainingSeconds >= secondsInHour){
+                    hours = Math.floor(remainingSeconds / secondsInHour);
+                    remainingSeconds = remainingSeconds % secondsInHour;
+                  }
 
-              if (remainingSeconds >= secondsInMinute){
-                minutes = Math.floor(remainingSeconds / secondsInMinute);
-                remainingSeconds = remainingSeconds % secondsInMinute;
-              }
+                  if (remainingSeconds >= secondsInMinute){
+                    minutes = Math.floor(remainingSeconds / secondsInMinute);
+                    remainingSeconds = remainingSeconds % secondsInMinute;
+                  }
 
-              return {
-                hours: hours,
-                minutes: minutes,
-                seconds: remainingSeconds
-              }
-            };
+                  return {
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: remainingSeconds
+                  }
+                };
 
-            var calculateTimeFromDistanceAndPace = function(distance, pace){
-              // Normalize whichever (distance or pace) is not in mile format
-              if (distance.unit !== pace.unit){
-                if (pace.unit == "mile"){
-                  distance = convertKMDistanceToMileDistance(distance);
-                } else if (pace.unit == "km"){
-                  pace = convertKMPaceToMilePace(pace);
+                var calculateTimeFromDistanceAndPace = function(distance, pace){
+                  // Normalize whichever (distance or pace) is not in mile format
+                  if (distance.unit !== pace.unit){
+                    if (pace.unit == "mile"){
+                      distance = convertKMDistanceToMileDistance(distance);
+                    } else if (pace.unit == "km"){
+                      pace = convertKMPaceToMilePace(pace);
+                    }
+                  }
+
+                  var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
+                  var totalSeconds = secondsPerUnitOfDistance * distance.value;
+
+                  return getTimeObjectFromSeconds(totalSeconds);
+                };
+
+                var calculateDistanceFromTimeAndPace = function(time, pace){
+                  var totalSeconds = getSecondsFromTimeObject(time);
+                  var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
+
+                  var value = totalSeconds / secondsPerUnitOfDistance;
+                  var unit = pace.unit;
+
+                  var distanceObject = {
+                    value: value,
+                    unit: unit
+                  };
+
+                  var unitFromDistanceForm = getDistanceUnitFromDistanceForm();
+
+                  if (unitFromDistanceForm !== unit){
+                    if (unitFromDistanceForm === "km"){
+                      distanceObject = convertMileDistanceToKMDistance(distanceObject);
+                    } else if (unitFromDistanceForm === "mile") {
+                      distanceObject = convertKMDistanceToMileDistance(distanceObject);
+                    }
+                  }
+
+                  return distanceObject;
                 }
-              }
 
-              var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
-              var totalSeconds = secondsPerUnitOfDistance * distance.value;
+                var calculatePaceFromTimeAndDistance = function(time, distance){
+                  var totalSeconds = getSecondsFromTimeObject(time);
+                  var secondsPerUnitOfDistance = totalSeconds / distance.value;
+                  var timeObject = getTimeObjectFromSeconds(secondsPerUnitOfDistance);
 
-              return getTimeObjectFromSeconds(totalSeconds);
-            };
+                  var paceObject = {
+                    minutes: timeObject.minutes,
+                    seconds: timeObject.seconds,
+                    unit: distance.unit
+                  };
 
-            var calculateDistanceFromTimeAndPace = function(time, pace){
-              var totalSeconds = getSecondsFromTimeObject(time);
-              var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
+                  var unitFromPaceForm = getPaceUnitFromPaceForm()
 
-              var value = totalSeconds / secondsPerUnitOfDistance;
-              var unit = pace.unit;
+                  if (unitFromPaceForm !== distance.unit){
+                    if (unitFromPaceForm == "km"){
+                      paceObject = convertMilePaceToKMPace(paceObject)
+                    } else if (unitFromPaceForm == "mile"){
+                      paceObject = convertKMPaceToMilePace(paceObject)
+                    }
+                  }
 
-              var distanceObject = {
-                value: value,
-                unit: unit
-              };
-
-              var unitFromDistanceForm = getDistanceUnitFromDistanceForm();
-
-              if (unitFromDistanceForm !== unit){
-                if (unitFromDistanceForm === "km"){
-                  distanceObject = convertMileDistanceToKMDistance(distanceObject);
-                } else if (unitFromDistanceForm === "mile") {
-                  distanceObject = convertKMDistanceToMileDistance(distanceObject);
+                  return paceObject;
                 }
-              }
 
-              return distanceObject;
-            }
+                // Unit conversion logic
+                var milesPerKm = 0.621371;
+                var kmPerMile = 1/milesPerKm;
 
-            var calculatePaceFromTimeAndDistance = function(time, distance){
-              var totalSeconds = getSecondsFromTimeObject(time);
-              var secondsPerUnitOfDistance = totalSeconds / distance.value;
-              var timeObject = getTimeObjectFromSeconds(secondsPerUnitOfDistance);
+                var convertMilePaceToKMPace = function(pace){
+                  if (pace.unit == "km"){
+                    return pace;
+                  }
 
-              var paceObject = {
-                minutes: timeObject.minutes,
-                seconds: timeObject.seconds,
-                unit: distance.unit
-              };
+                  var secondsPerMile = getSecondsFromPaceObject(pace);
+                  var secondsPerKM = secondsPerMile * milesPerKm;
+                  var kmTimeObject = getTimeObjectFromSeconds(secondsPerKM)
 
-              var unitFromPaceForm = getPaceUnitFromPaceForm();
+                  return {
+                    minutes: kmTimeObject.minutes,
+                    seconds: kmTimeObject.seconds,
+                    unit: "km"
+                  };
+                };
 
-              if (unitFromPaceForm !== distance.unit){
-                if (unitFromPaceForm == "km"){
-                  paceObject = convertMilePaceToKMPace(paceObject)
-                } else if (unitFromPaceForm == "mile"){
-                  paceObject = convertKMPaceToMilePace(paceObject)
-                }
-              }
+                var convertKMPaceToMilePace = function(pace){
+                  if (pace.unit == "mile"){
+                    return pace;
+                  }
 
-              return paceObject;
-            }
+                  var secondsPerKM = getSecondsFromPaceObject(pace);
+                  var secondsPerMile = secondsPerKM * kmPerMile;
 
-            // Unit conversion logic
-            var milesPerKm = 0.621371;
-            var kmPerMile = 1/milesPerKm;
+                  var mileTimeObject = getTimeObjectFromSeconds(secondsPerMile);
+                  return {
+                    minutes: mileTimeObject.minutes,
+                    seconds: mileTimeObject.seconds,
+                    unit: "mile"
+                  };
+                };
 
-            var convertMilePaceToKMPace = function(pace){
-              if (pace.unit == "km"){
-                return pace;
-              }
+                var convertKMDistanceToMileDistance = function(distance){
+                  return {
+                    value: distance.value * milesPerKm,
+                    unit: "mile"
+                  };
+                };
 
-              var secondsPerMile = getSecondsFromPaceObject(pace);
-              var secondsPerKM = secondsPerMile * milesPerKm;
-              var kmTimeObject = getTimeObjectFromSeconds(secondsPerKM)
+                var convertMileDistanceToKMDistance = function(distance){
+                  return {
+                    value: distance.value * kmPerMile,
+                    unit: "km"
+                  };
+                };
 
-              return {
-                minutes: kmTimeObject.minutes,
-                seconds: kmTimeObject.seconds,
-                unit: "km"
-              };
-            };
+                // DOM parsing/data retrieval logic
 
-            var convertKMPaceToMilePace = function(pace){
-              if (pace.unit == "mile"){
-                return pace;
-              }
+                // TODO - Input validation (check number of seconds for < 60 etc)
 
-              var secondsPerKM = getSecondsFromPaceObject(pace);
-              var secondsPerMile = secondsPerKM * kmPerMile;
+                var getPaceObjectFromPaceForm = function(){
+                  var form = document.getElementById("pace-form");
+                  var minutes = parseInt(form.querySelector("[name=mm]").value);
+                  var seconds = parseInt(form.querySelector("[name=ss]").value);
+                  var unit = form.querySelector("paper-listbox").selected;
 
-              var mileTimeObject = getTimeObjectFromSeconds(secondsPerMile);
-              return {
-                minutes: mileTimeObject.minutes,
-                seconds: mileTimeObject.seconds,
-                unit: "mile"
-              };
-            };
+                  if (isNaN(minutes) || isNaN(seconds) || !unit){
+                    return false;
+                  }
 
-            var convertKMDistanceToMileDistance = function(distance){
-              return {
-                value: distance.value * milesPerKm,
-                unit: "mile"
-              };
-            };
+                  return {
+                    minutes: minutes,
+                    seconds: seconds,
+                    unit: unit
+                  };
+                };
 
-            var convertMileDistanceToKMDistance = function(distance){
-              return {
-                value: distance.value * kmPerMile,
-                unit: "km"
-              };
-            };
+                var getDistanceObjectFromDistanceForm = function(){
+                  var form = document.getElementById("distance-form");
+                  var value = parseFloat(form.querySelector("[name=value]").value);
+                  var unit = form.querySelector("paper-listbox").selected;
 
-            // DOM parsing/data retrieval logic
+                  if (!value || !unit){
+                    return false;
+                  }
 
-            // TODO - Input validation (check number of seconds for < 60 etc)
+                  return {
+                    value: value,
+                    unit: unit
+                  };
+                };
 
-            var getPaceObjectFromPaceForm = function(){
-              var form = document.getElementById("pace-form");
-              var minutes = parseInt(form.querySelector("[name=mm]").value);
-              var seconds = parseInt(form.querySelector("[name=ss]").value);
-              var unit = form.querySelector("select").value;
+                var getTimeObjectFromTimeForm = function(){
+                  var form = document.getElementById("time-form");
+                  var hours = parseInt(form.querySelector("[name=hh]").value);
+                  var minutes = parseInt(form.querySelector("[name=mm]").value);
+                  var seconds = parseInt(form.querySelector("[name=ss]").value);
 
-              if (isNaN(minutes) || isNaN(seconds) || !unit){
-                return false;
-              }
+                  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)){
+                    return false;
+                  }
 
-              return {
-                minutes: minutes,
-                seconds: seconds,
-                unit: unit
-              };
-            };
+                  return {
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: seconds
+                  };
+                };
 
-            var getDistanceObjectFromDistanceForm = function(){
-              var form = document.getElementById("distance-form");
-              var value = parseFloat(form.querySelector("[name=value]").value);
-              var unit = form.querySelector("select").value;
+                var getPaceUnitFromPaceForm = function(){
+                  var form = document.getElementById("pace-form");
+                  var unit = form.querySelector("paper-listbox").selected;
+                  return unit;
+                };
 
-              if (!value || !unit){
-                return false;
-              }
+                var getDistanceUnitFromDistanceForm = function(){
+                  var form = document.getElementById("distance-form");
+                  var unit = form.querySelector("paper-listbox").selected;
+                  return unit;
+                };
 
-              return {
-                value: value,
-                unit: unit
-              };
-            };
+                // Form filling logic
 
-            var getTimeObjectFromTimeForm = function(){
-              var form = document.getElementById("time-form");
-              var hours = parseInt(form.querySelector("[name=hh]").value);
-              var minutes = parseInt(form.querySelector("[name=mm]").value);
-              var seconds = parseInt(form.querySelector("[name=ss]").value);
+                var fillTimeFormFromTimeObject = function(time){
+                  var form = document.getElementById("time-form");
 
-              if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)){
-                return false;
-              }
+                  var hoursInput = form.querySelector("paper-input[name=hh]");
+                  var minutesInput = form.querySelector("paper-input[name=mm]");
+                  var secondsInput = form.querySelector("paper-input[name=ss]");
 
-              return {
-                hours: hours,
-                minutes: minutes,
-                seconds: seconds
-              };
-            };
+                  hoursInput.value = time.hours;
+                  minutesInput.value = time.minutes;
+                  secondsInput.value = time.seconds;
+                };
 
-            var getPaceUnitFromPaceForm = function(){
-              var form = document.getElementById("pace-form");
-              var unit = form.querySelector("select").value;
-              return unit;
-            };
+                var fillDistanceFormFromDistanceObject = function(distance){
+                  var form = document.getElementById("distance-form");
 
-            var getDistanceUnitFromDistanceForm = function(){
-              var form = document.getElementById("distance-form");
-              var unit = form.querySelector("select").value;
-              return unit;
-            };
+                  var valueInput = form.querySelector("paper-input[name=value]");
+                  var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
-            // Form filling logic
+                  valueInput.value = distance.value;
+                  unitSelectTag.value = distance.unit;
+                };
 
-            var fillTimeFormFromTimeObject = function(time){
-              var form = document.getElementById("time-form");
+                var fillPaceFormFromPaceObject = function(pace){
+                  var form = document.getElementById("pace-form");
 
-              var hoursInput = form.querySelector("input[name=hh]");
-              var minutesInput = form.querySelector("input[name=mm]");
-              var secondsInput = form.querySelector("input[name=ss]");
+                  var minutesInput = form.querySelector("paper-input[name=mm]");
+                  var secondsInput = form.querySelector("paper-input[name=ss]");
+                  var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
-              hoursInput.value = time.hours;
-              minutesInput.value = time.minutes;
-              secondsInput.value = time.seconds;
-            };
-
-            var fillDistanceFormFromDistanceObject = function(distance){
-              var form = document.getElementById("distance-form");
-
-              var valueInput = form.querySelector("input[name=value]");
-              var unitSelectTag = form.querySelector("select");
-
-              valueInput.value = distance.value;
-              unitSelectTag.value = distance.unit;
-            };
-
-            var fillPaceFormFromPaceObject = function(pace){
-              var form = document.getElementById("pace-form");
-
-              var minutesInput = form.querySelector("input[name=mm]");
-              var secondsInput = form.querySelector("input[name=ss]");
-              var unitSelectTag = form.querySelector("select");
-
-              minutesInput.value = pace.minutes;
-              secondsInput.value = pace.seconds;
-              unitSelectTag.value = pace.unit;
-            };
+                  minutesInput.value = pace.minutes;
+                  secondsInput.value = pace.seconds;
+                  unitSelectTag.value = pace.unit;
+                };
 
 
-            // Event handlers
+                // Event handlers
 
-            document.getElementById("time-button").addEventListener("click", function(){
-              var pace = getPaceObjectFromPaceForm();
-              var distance = getDistanceObjectFromDistanceForm();
+                document.getElementById("time-button").addEventListener("click", function(){
+                  var pace = getPaceObjectFromPaceForm();
+                  var distance = getDistanceObjectFromDistanceForm();
 
-              if (!pace || !distance){
-                alert("Enter pace and distance to calculate time.")
-                return;
-              }
+                  if (!pace || !distance){
+                    alert("Enter pace and distance to calculate time.")
+                    return;
+                  }
 
-              var time = calculateTimeFromDistanceAndPace(distance, pace);
+                  var time = calculateTimeFromDistanceAndPace(distance, pace);
 
-              fillTimeFormFromTimeObject(time);
-            });
+                  fillTimeFormFromTimeObject(time);
+                });
 
-            document.getElementById("distance-button").addEventListener("click", function(){
-              var time = getTimeObjectFromTimeForm();
-              var pace = getPaceObjectFromPaceForm();
+                document.getElementById("distance-button").addEventListener("click", function(){
+                  var time = getTimeObjectFromTimeForm();
+                  var pace = getPaceObjectFromPaceForm();
 
-              if (!time || !pace){
-                alert("Enter time and pace to calculate distance.");
-                return;
-              }
+                  if (!time || !pace){
+                    alert("Enter time and pace to calculate distance.");
+                    return;
+                  }
 
-              var distance = calculateDistanceFromTimeAndPace(time, pace);
+                  var distance = calculateDistanceFromTimeAndPace(time, pace);
 
-              fillDistanceFormFromDistanceObject(distance);
-            });
+                  fillDistanceFormFromDistanceObject(distance);
+                });
 
-            document.getElementById("pace-button").addEventListener("click", function(){
-              var time = getTimeObjectFromTimeForm();
-              var distance = getDistanceObjectFromDistanceForm();
+                document.getElementById("pace-button").addEventListener("click", function(){
+                  var time = getTimeObjectFromTimeForm();
+                  var distance = getDistanceObjectFromDistanceForm();
 
-              if (!time || !distance){
-                alert("Enter time and distance to calculate pace.");
-                return;
-              }
+                  if (!time || !distance){
+                    alert("Enter time and distance to calculate pace.");
+                    return;
+                  }
 
-              var pace = calculatePaceFromTimeAndDistance(time, distance);
+                  var pace = calculatePaceFromTimeAndDistance(time, distance);
 
-              fillPaceFormFromPaceObject(pace);
-            });
-          </script>
+                  fillPaceFormFromPaceObject(pace);
+                });
+              </script>
+            </div>
+          </div>
+          <span class="flex"></span>
         </div>
       </div>
-      <span class="flex"></span>
-    </div>
+    </paper-card>
   </template>
   <script>
     Polymer({
