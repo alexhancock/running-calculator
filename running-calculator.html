@@ -9,7 +9,7 @@
 <link rel="import" href="bower_components/paper-button/paper-button.html">
 <link rel="import" href="bower_components/paper-toast/paper-toast.html">
 
-<dom-module id="pace-calc">
+<dom-module id="running-calculator">
   <template>
     <style include="iron-flex iron-flex-alignment"></style>
     <style>
@@ -56,7 +56,7 @@
             <h3>Distance</h3>
             <div class="layout horizontal center">
               <form id="distance-form" class="layout horizontal center flex">
-                <paper-input type="text" name="value" placeholder="Distance"></paper-input>
+                <paper-input type="text" name="value" label="Distance"></paper-input>
                 <paper-dropdown-menu>
                   <paper-listbox class="dropdown-content" selected="mile" attr-for-selected="data-value">
                     <paper-item data-value="mile">Mile</paper-item>
@@ -69,6 +69,7 @@
             <h3>Pace</h3>
             <div class="layout horizontal center">
               <form id="pace-form" class="layout horizontal center flex">
+                <paper-input name="hh" label="HH"></paper-input>
                 <paper-input name="mm" label="MM"></paper-input>
                 <paper-input name="ss" label="SS"></paper-input>
                 <paper-dropdown-menu label="per">
@@ -194,6 +195,7 @@
         var timeObject = getTimeObjectFromSeconds(secondsPerUnitOfDistance);
 
         var paceObject = {
+          hours: timeObject.hours,
           minutes: timeObject.minutes,
           seconds: timeObject.seconds,
           unit: distance.unit
@@ -300,8 +302,8 @@
         var form = document.getElementById("time-form");
 
         var hours = parseInt(form.querySelector("[name=hh]").value || 0);
-        var minutes = parseInt(form.querySelector("[name=mm]").value);
-        var seconds = parseInt(form.querySelector("[name=ss]").value);
+        var minutes = parseInt(form.querySelector("[name=mm]").value || 0);
+        var seconds = parseInt(form.querySelector("[name=ss]").value || 0);
 
         if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)){
           return false;
@@ -353,10 +355,12 @@
       var fillPaceFormFromPaceObject = function(pace){
         var form = document.getElementById("pace-form");
 
+        var hoursInput = form.querySelector("paper-input[name=hh]");
         var minutesInput = form.querySelector("paper-input[name=mm]");
         var secondsInput = form.querySelector("paper-input[name=ss]");
         var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
+        hoursInput.value = pace.hours || 0;
         minutesInput.value = pace.minutes;
         secondsInput.value = pace.seconds.toPrecision(4);
         unitSelectTag.value = pace.unit;
@@ -415,8 +419,7 @@
   </template>
   <script>
     Polymer({
-      /* this is the element's prototype */
-      is: "pace-calc"
+      is: "running-calculator"
     });
   </script>
 </dom-module>

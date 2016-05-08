@@ -1,10 +1,10 @@
 {
-  "name": "pace-calc",
+  "name": "running-calculator",
   "authors": [
     "Alex Hancock <alex@alexhancock.com>"
   ],
   "description": "A pace/distance/time calculator for runners",
-  "main": "index.js",
+  "main": "running-calculator.html",
   "keywords": [
     "running"
   ],
