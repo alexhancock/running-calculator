@@ -56,7 +56,7 @@
       </div>
       <div class="layout vertical main_fields">
         <div class="layout horizontal center">
-          <form class="layout horizontal center field">
+          <form id="time-form" class="layout horizontal center field">
             <div class="time-input-container">
               <span>HH</label>
               <input name="hh" class="mini"></input>
@@ -74,11 +74,11 @@
           <button id="time-button">Calculate</button>
         </div>
         <div class="layout horizontal center">
-          <form class="layout horizontal center field">
+          <form id="distance-form" class="layout horizontal center field">
             <div>
-              <input class="forminput" type="text" placeholder="10"></input>
+              <input class="forminput" type="text" name="value" placeholder="10"></input>
               <select class="forminput">
-                <option val="miles">miles</option>
+                <option val="mile">mile</option>
                 <option val="km">km</option>
               </select>
             </div>
@@ -87,12 +87,8 @@
           <button id="distance-button">Calculate</button>
         </div>
         <div class="layout horizontal center">
-          <form class="layout vertical center">
+          <form id="pace-form" class="layout vertical center">
             <div class="layout horizontal center field">
-              <div class="time-input-container">
-                <span>HH</label>
-                <input name="hh" class="mini"></input>
-              </div>
               <div class="time-input-container">
                 <span>MM</label>
                 <input name="mm" class="mini"></input>
@@ -113,7 +109,125 @@
           <span class="flex"></span>
           <button id="pace-button">Calculate</button>
           <script type="text/javascript">
-              
+            // Type diagram
+            // time -> { hours: DD, minutes: DD, seconds: DD  }
+            // distance -> { value: DD, unit: miles/km }
+            // pace -> { minutes: DD, seconds: DD, unit: miles/km }
+
+            // Calculation Logic
+
+            var getSecondsFromTimeObject = function(time){
+
+            };
+
+            var getSecondsFromPaceObject = function(pace){
+              var numSecondsFromMinutes;
+              if (pace.minutes){
+                numSecondsInMinutes = pace.minutes * 60;
+              } else {
+                numSecondsInMinutes = 0;
+              }
+              return numSecondsInMinutes + pace.seconds
+            };
+
+            var getTimeObjectFromSeconds = function(seconds){
+              var hours = 0;
+              var minutes = 0;
+              var remainingSeconds = seconds;
+
+              var secondsInMinute = 60;
+              var secondsInHour = secondsInMinute * 60;
+
+              if (remainingSeconds >= secondsInHour){
+                hours = Math.floor(remainingSeconds / secondsInHour);
+                remainingSeconds = remainingSeconds % secondsInHour;
+              }
+
+              if (remainingSeconds >= secondsInMinute){
+                minutes = Math.floor(remainingSeconds / secondsInMinute);
+                remainingSeconds = remainingSeconds % secondsInMinute;
+              }
+
+              return {
+                hours: hours,
+                minutes: minutes,
+                seconds: remainingSeconds
+              }
+            };
+
+            var calculateTimeFromDistanceAndPace = function(distance, pace){
+              var secondsPerUnitOfDistance = getSecondsFromPaceObject(pace);
+              var totalSeconds = secondsPerUnitOfDistance * distance.value;
+              return getTimeObjectFromSeconds(totalSeconds);
+            };
+            var calculateDistanceFromTimeAndPace = function(time, pace){}
+            var calculatePaceFromTimeAndDistance = function(time, distance){}
+
+            // DOM parsing/data retrieval logic
+
+            // TODO - Input validation (check number of seconds for < 60 etc)
+
+            var getPaceObjectFromPaceForm = function(){
+              var form = document.getElementById("pace-form");
+              var minutes = parseInt(form.querySelector("[name=mm]").value);
+              var seconds = parseInt(form.querySelector("[name=ss]").value);
+              var unit = form.querySelector("select").value;
+
+              if (minutes === NaN || seconds === NaN || !unit){
+                return false;
+              }
+
+              return {
+                minutes: minutes,
+                seconds: seconds,
+                unit: unit
+              };
+            };
+
+            var getDistanceObjectFromDistanceForm = function(){
+              var form = document.getElementById("distance-form");
+              var value = parseFloat(form.querySelector("[name=value]").value);
+              var unit = form.querySelector("select").value;
+
+              if (!value || !unit){
+                return false;
+              }
+
+              return {
+                value: value,
+                unit: unit
+              };
+            };
+
+            // Form filling logic
+
+            var fillTimeFormFromTimeObject = function(time){
+              var form = document.getElementById("time-form");
+
+              var hoursInput = form.querySelector("input[name=hh]");
+              var minutesInput = form.querySelector("input[name=mm]");
+              var secondsInput = form.querySelector("input[name=ss]");
+
+              hoursInput.value = time.hours;
+              minutesInput.value = time.minutes;
+              secondsInput.value = time.seconds;
+            };
+
+            // Event handlers
+
+            document.getElementById("time-button").addEventListener("click", function(){
+              var pace = getPaceObjectFromPaceForm();
+              var distance = getDistanceObjectFromDistanceForm();
+
+              if (!pace || !distance){
+                alert("Enter pace and distance to calculate time.")
+                return;
+              }
+
+              var time = calculateTimeFromDistanceAndPace(distance, pace);
+
+              fillTimeFormFromTimeObject(time);
+            });
   
           </script>
         </div>
