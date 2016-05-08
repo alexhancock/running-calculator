@@ -186,7 +186,17 @@
                 unit: unit
               };
             }
-            var calculatePaceFromTimeAndDistance = function(time, distance){}
+            var calculatePaceFromTimeAndDistance = function(time, distance){
+              var totalSeconds = getSecondsFromTimeObject(time);
+              var secondsPerUnitOfDistance = totalSeconds / distance.value;
+              var timeObject = getTimeObjectFromSeconds(secondsPerUnitOfDistance);
+
+              return {
+                minutes: timeObject.minutes,
+                seconds: timeObject.seconds,
+                unit: distance.unit
+              };
+            }
 
             // DOM parsing/data retrieval logic
 
@@ -198,7 +208,7 @@
               var seconds = parseInt(form.querySelector("[name=ss]").value);
               var unit = form.querySelector("select").value;
 
-              if (minutes === NaN || seconds === NaN || !unit){
+              if (isNaN(minutes) || isNaN(seconds) || !unit){
                 return false;
               }
 
@@ -229,6 +239,10 @@
               var hours = parseInt(form.querySelector("[name=hh]").value);
               var minutes = parseInt(form.querySelector("[name=mm]").value);
               var seconds = parseInt(form.querySelector("[name=ss]").value);
+
+              if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)){
+                return false;
+              }
 
               return {
                 hours: hours,
@@ -261,6 +275,19 @@
               unitSelectTag.value = distance.unit;
             };
 
+            var fillPaceFormFromPaceObject = function(pace){
+              var form = document.getElementById("pace-form");
+
+              var minutesInput = form.querySelector("input[name=mm]");
+              var secondsInput = form.querySelector("input[name=ss]");
+              var unitSelectTag = form.querySelector("select");
+
+              minutesInput.value = pace.minutes;
+              secondsInput.value = pace.seconds;
+              unitSelectTag.value = pace.unit;
+            };
+
+
             // Event handlers
 
             document.getElementById("time-button").addEventListener("click", function(){
@@ -282,13 +309,27 @@
               var pace = getPaceObjectFromPaceForm();
 
               if (!time || !pace){
-                alert("Enter time and pace to calculate distance.")
+                alert("Enter time and pace to calculate distance.");
                 return;
               }
 
               var distance = calculateDistanceFromTimeAndPace(time, pace);
 
               fillDistanceFormFromDistanceObject(distance);
+            });
+
+            document.getElementById("pace-button").addEventListener("click", function(){
+              var time = getTimeObjectFromTimeForm();
+              var distance = getDistanceObjectFromDistanceForm();
+
+              if (!time || !distance){
+                alert("Enter time and distance to calculate pace.");
+                return;
+              }
+
+              var pace = calculatePaceFromTimeAndDistance(time, distance);
+
+              fillPaceFormFromPaceObject(pace);
             });
           </script>
         </div>
