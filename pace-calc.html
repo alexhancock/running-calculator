@@ -250,8 +250,6 @@
 
                 // DOM parsing/data retrieval logic
 
-                // TODO - Input validation (check number of seconds for < 60 etc)
-
                 var getPaceObjectFromPaceForm = function(){
                   var form = document.getElementById("pace-form");
                   var minutes = parseInt(form.querySelector("[name=mm]").value);
@@ -286,7 +284,8 @@
 
                 var getTimeObjectFromTimeForm = function(){
                   var form = document.getElementById("time-form");
-                  var hours = parseInt(form.querySelector("[name=hh]").value);
+
+                  var hours = parseInt(form.querySelector("[name=hh]").value || 0);
                   var minutes = parseInt(form.querySelector("[name=mm]").value);
                   var seconds = parseInt(form.querySelector("[name=ss]").value);
 
@@ -324,7 +323,7 @@
 
                   hoursInput.value = time.hours;
                   minutesInput.value = time.minutes;
-                  secondsInput.value = time.seconds;
+                  secondsInput.value = time.seconds.toPrecision(4);
                 };
 
                 var fillDistanceFormFromDistanceObject = function(distance){
@@ -333,7 +332,7 @@
                   var valueInput = form.querySelector("paper-input[name=value]");
                   var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
-                  valueInput.value = distance.value;
+                  valueInput.value = distance.value.toPrecision(2);
                   unitSelectTag.value = distance.unit;
                 };
 
@@ -345,14 +344,11 @@
                   var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
                   minutesInput.value = pace.minutes;
-                  secondsInput.value = pace.seconds;
+                  secondsInput.value = pace.seconds.toPrecision(4);
                   unitSelectTag.value = pace.unit;
                 };
 
-
-                // Event handlers
-
-                document.getElementById("time-button").addEventListener("click", function(){
+                var calculateAndFillTime = function(){
                   var pace = getPaceObjectFromPaceForm();
                   var distance = getDistanceObjectFromDistanceForm();
 
@@ -364,9 +360,9 @@
                   var time = calculateTimeFromDistanceAndPace(distance, pace);
 
                   fillTimeFormFromTimeObject(time);
-                });
+                };
 
-                document.getElementById("distance-button").addEventListener("click", function(){
+                var calculateAndFillDistance = function(){
                   var time = getTimeObjectFromTimeForm();
                   var pace = getPaceObjectFromPaceForm();
 
@@ -378,9 +374,9 @@
                   var distance = calculateDistanceFromTimeAndPace(time, pace);
 
                   fillDistanceFormFromDistanceObject(distance);
-                });
+                };
 
-                document.getElementById("pace-button").addEventListener("click", function(){
+                var calculateAndFillPace = function(){
                   var time = getTimeObjectFromTimeForm();
                   var distance = getDistanceObjectFromDistanceForm();
 
@@ -392,7 +388,12 @@
                   var pace = calculatePaceFromTimeAndDistance(time, distance);
 
                   fillPaceFormFromPaceObject(pace);
-                });
+                };
+
+                // Event handlers
+                document.getElementById("time-button").addEventListener("click", calculateAndFillTime);
+                document.getElementById("distance-button").addEventListener("click", calculateAndFillDistance);
+                document.getElementById("pace-button").addEventListener("click", calculateAndFillPace);
               </script>
             </div>
           </div>
