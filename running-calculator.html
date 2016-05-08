@@ -13,31 +13,28 @@
   <template>
     <style include="iron-flex iron-flex-alignment"></style>
     <style>
-      .top {
-        width: 100%;
+      h3 {
+        margin: 10px 0 0 0;
+        padding-bottom: 5px;
       }
-      .main_fields {
-        width: 100%;
-      }
-      .paper-card {
-        width: 100%;
-      }
-      paper-input, paper-dropdown-menu {
+      paper-input {
         margin-left: 2px;
         margin-right: 2px;
-        color: green;
+      }
+      paper-dropdown-menu {
+        margin-left: 10px;
+        margin-right: 10px;
       }
       paper-button {
         width: 120px;
       }
-      h3 {
-        margin: 10px 0 0 0;
-      }
-    </style>
-    <style is="custom-style">
       #toast {
         --paper-toast-background-color: red;
         --paper-toast-color: white;
+        font-weight: bold;
+      }
+      :root {
+        --paper-input-container-focus-color: forestgreen;
       }
     </style>
     <paper-card heading="Running Calculator" style="width: 100%;">
@@ -47,9 +44,9 @@
             <h3>Time</h3>
             <div class="layout horizontal center">
               <form id="time-form" class="layout horizontal center flex">
-                <paper-input name="hh" label="HH"></paper-input>
-                <paper-input name="mm" label="MM"></paper-input>
-                <paper-input name="ss" label="SS"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="hh" label="HH"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="mm" label="MM"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="ss" label="SS"></paper-input>
               </form>
               <paper-button raised id="time-button">Calculate</paper-button>
             </div>
@@ -69,9 +66,9 @@
             <h3>Pace</h3>
             <div class="layout horizontal center">
               <form id="pace-form" class="layout horizontal center flex">
-                <paper-input name="hh" label="HH"></paper-input>
-                <paper-input name="mm" label="MM"></paper-input>
-                <paper-input name="ss" label="SS"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="hh" label="HH"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="mm" label="MM"></paper-input>
+                <paper-input auto-validate pattern="[0-9]*" name="ss" label="SS"></paper-input>
                 <paper-dropdown-menu label="per">
                   <paper-listbox class="dropdown-content" selected="mile" attr-for-selected="data-value">
                     <paper-item data-value="mile">Mile</paper-item>
@@ -330,6 +327,14 @@
 
       // Form filling logic
 
+      var prepareNumberForDisplay = function(num){
+        var displayNum = "" + num;
+        if (parseInt(num).toString().length == 1){
+          displayNum = "0" + displayNum;
+        }
+        return displayNum;
+      }
+
       var fillTimeFormFromTimeObject = function(time){
         var form = document.getElementById("time-form");
 
@@ -337,9 +342,9 @@
         var minutesInput = form.querySelector("paper-input[name=mm]");
         var secondsInput = form.querySelector("paper-input[name=ss]");
 
-        hoursInput.value = time.hours;
-        minutesInput.value = time.minutes;
-        secondsInput.value = time.seconds.toPrecision(4);
+        hoursInput.value = prepareNumberForDisplay(time.hours);
+        minutesInput.value = prepareNumberForDisplay(time.minutes);
+        secondsInput.value = prepareNumberForDisplay(time.seconds);
       };
 
       var fillDistanceFormFromDistanceObject = function(distance){
@@ -348,7 +353,7 @@
         var valueInput = form.querySelector("paper-input[name=value]");
         var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
-        valueInput.value = distance.value.toPrecision(2);
+        valueInput.value = distance.value;
         unitSelectTag.value = distance.unit;
       };
 
@@ -360,10 +365,10 @@
         var secondsInput = form.querySelector("paper-input[name=ss]");
         var unitSelectTag = form.querySelector("paper-dropdown-menu");
 
-        hoursInput.value = pace.hours || 0;
-        minutesInput.value = pace.minutes;
-        secondsInput.value = pace.seconds.toPrecision(4);
-        unitSelectTag.value = pace.unit;
+        hoursInput.value = prepareNumberForDisplay(pace.hours || 0);
+        minutesInput.value = prepareNumberForDisplay(pace.minutes);
+        secondsInput.value = prepareNumberForDisplay(pace.seconds);
+        unitSelectTag.value = prepareNumberForDisplay(pace.unit);
       };
 
       var calculateAndFillTime = function(){
