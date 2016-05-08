@@ -1,0 +1,133 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="pace-calc">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+      div {
+        color: green;
+      }
+      label, input {
+        display: block;
+      }
+      input.mini {
+        width: 30px;
+        margin: 0 auto;
+      }
+      .top {
+        width: 100vw;
+        height: 315px;
+      }
+      .main_fields {
+        width: 400px;
+        padding-left: 10px;
+      }
+      .labels {
+        width: 100px;
+        text-align: center;
+        background: black;
+        color: white;
+      }
+      .labels .item {
+        height: 100px;
+        line-height: 100px;
+        width: 100px;
+        text-align: center;
+        background: black;
+        color: white;
+      }
+      .field {
+        height: 100px;
+      }
+      .forminput {
+        width: 150px;
+      }
+      .time-input-container {
+        width: 50px;
+        text-align: center;
+      }
+    </style>
+    <div class="top layout horizontal">
+      <span class="flex"></span>
+      <div class="layout vertical labels center">
+        <span class="item">Time</span>
+        <span class="item">Distance</span>
+        <span class="item">Pace</span>
+      </div>
+      <div class="layout vertical main_fields">
+        <div class="layout horizontal center">
+          <form class="layout horizontal center field">
+            <div class="time-input-container">
+              <span>HH</label>
+              <input name="hh" class="mini"></input>
+            </div>
+            <div class="time-input-container">
+              <span>MM</label>
+              <input name="mm" class="mini"></input>
+            </div>
+            <div class="time-input-container">
+              <span>SS</label>
+              <input name="ss" class="mini"></input>
+            </div>
+          </form>
+          <span class="flex"></span>
+          <button id="time-button">Calculate</button>
+        </div>
+        <div class="layout horizontal center">
+          <form class="layout horizontal center field">
+            <div>
+              <input class="forminput" type="text" placeholder="10"></input>
+              <select class="forminput">
+                <option val="miles">miles</option>
+                <option val="km">km</option>
+              </select>
+            </div>
+          </form>
+          <span class="flex"></span>
+          <button id="distance-button">Calculate</button>
+        </div>
+        <div class="layout horizontal center">
+          <form class="layout vertical center">
+            <div class="layout horizontal center field">
+              <div class="time-input-container">
+                <span>HH</label>
+                <input name="hh" class="mini"></input>
+              </div>
+              <div class="time-input-container">
+                <span>MM</label>
+                <input name="mm" class="mini"></input>
+              </div>
+              <div class="time-input-container">
+                <span>SS</label>
+                <input name="ss" class="mini"></input>
+              </div>
+            </div>
+            <div>
+              <span>Per</label>
+              <select>
+                <option val="mile">mile</option>
+                <option val="km">km</option>
+              </select>
+            </div>
+          </form>
+          <span class="flex"></span>
+          <button id="pace-button">Calculate</button>
+          <script type="text/javascript">
+              
+  
+          </script>
+        </div>
+      </div>
+      <span class="flex"></span>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      /* this is the element's prototype */
+      is: "pace-calc",
+      onPaceClick: function(){
+        console.log("A");
+      }
+    });
+  </script>
+</dom-module>
