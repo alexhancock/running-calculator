@@ -1,0 +1,36 @@
+{
+  "name": "running-calculator",
+  "authors": [
+    "Alex Hancock <alex@alexhancock.com>"
+  ],
+  "description": "A pace/distance/time calculator for runners",
+  "main": "running-calculator.html",
+  "keywords": [
+    "running"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/alexhancock/running-calculator",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "iron-flex-layout": "^1.3.1",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7"
+  },
+  "version": "0.0.5",
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.5",
+    "commit": "76f23fdec66e67931439aeb9705e1b36bffef0c4"
+  },
+  "_source": "git://github.com/alexhancock/running-calculator.git",
+  "_target": "^0.0.5",
+  "_originalSource": "alexhancock/running-calculator",
+  "_direct": true
+}
