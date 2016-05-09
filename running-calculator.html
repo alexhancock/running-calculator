@@ -1,13 +1,13 @@
-<link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 
-<link rel="import" href="bower_components/paper-card/paper-card.html">
-<link rel="import" href="bower_components/paper-input/paper-input.html">
-<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="bower_components/paper-item/paper-item.html">
-<link rel="import" href="bower_components/paper-button/paper-button.html">
-<link rel="import" href="bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
 
 <dom-module id="running-calculator">
   <template>
@@ -44,9 +44,9 @@
             <h3>Time</h3>
             <div class="layout horizontal center">
               <form id="time-form" class="layout horizontal center flex">
-                <paper-input auto-validate pattern="[0-9]*" name="hh" label="HH"></paper-input>
-                <paper-input auto-validate pattern="[0-9]*" name="mm" label="MM"></paper-input>
-                <paper-input auto-validate pattern="[0-9]*" name="ss" label="SS"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="hh" label="HH"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="mm" label="MM"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="ss" label="SS"></paper-input>
               </form>
               <paper-button raised tabindex="-1" id="time-button">Calculate</paper-button>
             </div>
@@ -66,9 +66,9 @@
             <h3>Pace</h3>
             <div class="layout horizontal center">
               <form id="pace-form" class="layout horizontal center flex">
-                <paper-input auto-validate pattern="[0-9]*" name="hh" label="HH"></paper-input>
-                <paper-input auto-validate pattern="[0-9]*" name="mm" label="MM"></paper-input>
-                <paper-input auto-validate pattern="[0-9]*" name="ss" label="SS"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="hh" label="HH"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="mm" label="MM"></paper-input>
+                <paper-input auto-validate pattern="\d+.\d*|\d+" name="ss" label="SS"></paper-input>
                 <paper-dropdown-menu label="per">
                   <paper-listbox class="dropdown-content" selected="mile" attr-for-selected="data-value">
                     <paper-item data-value="mile">Mile</paper-item>
