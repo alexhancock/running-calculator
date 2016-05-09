@@ -4,6 +4,8 @@ A Web Component for runners to calculate pace/distance/time.
 
 ![alt text](https://raw.githubusercontent.com/alexhancock/running-calculator/master/screenshot.png)
 
+Demo: [https://alexhancock.github.io/running-calculator/](https://alexhancock.github.io/running-calculator/)
+
 #### Install
 
 ```
