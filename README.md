@@ -1,6 +1,6 @@
 # running-calculator
 
-A Web Component for runners to calculate pace/distance/time.
+A Web Component for runners to calculate time/distance/pace.
 
 ![alt text](https://raw.githubusercontent.com/alexhancock/running-calculator/master/screenshot.png)
 
