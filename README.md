@@ -2,7 +2,7 @@
 
 A Web Component for runners to calculate time/distance/pace.
 
-![alt text](https://raw.githubusercontent.com/alexhancock/running-calculator/master/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/alexhancock/running-calculator/master/screenshot.png)
 
 Demo: [https://alexhancock.github.io/running-calculator/](https://alexhancock.github.io/running-calculator/)
 
